@@ -1,0 +1,41 @@
+# secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Meta / browser auth
+cookies*.json
+storage-state*.json
+**/user-data-dir/
+**/browser-profile/
+**/profiles/
+*.har
+*.wslog
+*.netlog
+
+# package managers
+node_modules/
+.pnpm-store/
+.npm/
+
+# builds
+dist/
+build/
+coverage/
+.tmp/
+.cache/
+
+# OS/editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# local project state
+.local/
+data/
+logs/

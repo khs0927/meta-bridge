@@ -1,0 +1,10 @@
+{
+  "name": "meta-ai-local-bridge",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@10",
+  "scripts": {
+    "check:secrets": "node scripts/check-secrets.mjs"
+  },
+  "workspaces": ["packages/*"]
+}
