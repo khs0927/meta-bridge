@@ -1,0 +1,19 @@
+[submodule "upstreams/mcp-bridge"]
+	path = upstreams/mcp-bridge
+	url = https://github.com/WongJingGitt/mcp-bridge.git
+	branch = master
+
+[submodule "upstreams/mcp_bridge_server"]
+	path = upstreams/mcp_bridge_server
+	url = https://github.com/WongJingGitt/mcp_bridge_server.git
+	branch = master
+
+[submodule "upstreams/metaai-api"]
+	path = upstreams/metaai-api
+	url = https://github.com/mir-ashiq/metaai-api.git
+	branch = main
+
+[submodule "upstreams/ZeroScript-Free"]
+	path = upstreams/ZeroScript-Free
+	url = https://github.com/sebattfg/ZeroScript-Free.git
+	branch = master

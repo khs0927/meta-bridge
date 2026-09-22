@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  push:
+    branches: [main, "feat/**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Static policy checks
+        run: |
+          npm run check:secrets
+          npm run test:meta-overlay
+
+      - name: Build secured Meta bridge
+        run: npm run build:meta
+
+      - name: Verify built output
+        run: node scripts/verify-built-output.mjs
+
+      - name: Compile patched Python server
+        run: python -m py_compile dist/meta-mcp-server/utils/mcp_bridge.py
