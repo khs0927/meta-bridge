@@ -1,34 +1,45 @@
 # Meta AI Local Bridge
 
-Composition-first project for connecting the logged-in `meta.ai` web experience to local MCP tools, while also exposing the Meta AI browser session through a local OpenAI-compatible gateway.
+Composition-first project for connecting the logged-in `meta.ai` web experience to local MCP tools.
 
-## Direction A — Meta.ai → local tools
+## Main path
 
-`meta.ai -> browser extension -> authenticated localhost bridge -> MCP router -> local tools`
+```text
+Meta.ai
+  -> Meta DOM overlay
+  -> reused MCP Bridge extension engine
+  -> authenticated 127.0.0.1 bridge
+  -> configured MCP servers
+```
 
-## Direction B — local agents → Meta.ai
+The project minimizes custom code by pinning major upstream projects as Git submodules and applying small build-time overlays.
 
-`local agent -> OpenAI-compatible gateway -> browser-session adapter -> meta.ai`
+## Current implementation
 
-## Principles
+- Meta.ai DOM watcher using current `data-testid` selectors.
+- Explicit **MCP 시작** bootstrap in Meta.ai.
+- Reuse of upstream MCP service discovery, prompt builder, tool parser/executor and result reinjection.
+- Secured build of `mcp_bridge_server`.
+- Generated 256-bit local Bearer token shared only between built extension/server.
+- Loopback-only server bind.
+- Default `read_only` policy with exact tool allowlist.
+- CI build verification.
+- Windows setup/start scripts.
 
-- Reuse upstream open source before writing new code.
-- Keep Meta-specific DOM logic behind a provider interface.
-- Bind local services to `127.0.0.1` by default.
-- Require authenticated extension ↔ bridge transport.
-- Read-only / Safe Mode by default.
-- Never place cookies, browser profiles, HAR captures with auth headers, or tokens in Git.
-- Prefer browser-generated Meta traffic over reimplementing private DGW framing from scratch.
-- Treat GPL upstream code as a separate licensing boundary unless the resulting project intentionally adopts a compatible license.
+## Windows
 
-## Bootstrap status
+See `docs/WINDOWS_QUICKSTART.md`.
 
-This repository intentionally contains **interfaces, policy, documentation, and integration seams only**. No upstream source code has been copied into this bootstrap.
+Quick setup:
 
-See:
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\setup-windows.ps1
+```
 
-- `UPSTREAMS.md`
-- `UPSTREAMS.lock.json`
-- `SECURITY.md`
-- `LICENSE_POLICY.md`
-- `docs/ARCHITECTURE.md`
+Then load `dist\meta-mcp-bridge` as an unpacked Chrome/Edge extension and start the secured server.
+
+## Upstream policy
+
+See `UPSTREAMS.md`, `UPSTREAMS.lock.json`, `LICENSE_POLICY.md`, and `SECURITY.md`.
+
+No cookies, browser profiles, authenticated HAR files, or generated bridge tokens belong in Git.
