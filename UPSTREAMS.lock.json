@@ -3,6 +3,7 @@
   "upstreams": [
     {"repo":"sebattfg/ZeroScript-Free","branch":"master","sha":"32dd8463580ac49fba5434bcc6fb2207aa14a45c","license":"GPL-3.0"},
     {"repo":"WongJingGitt/mcp-bridge","branch":"master","sha":"bd85360bb17f74cc7cb55a18147757b9cbc0c8e3","license":"MIT"},
+    {"repo":"WongJingGitt/mcp_bridge_server","branch":"master","sha":"d8276ca037bc263c4310fea7654967e1376e53ce","license":"MIT"},
     {"repo":"mir-ashiq/metaai-api","branch":"main","sha":"bc72dc08324b05a256b5a129badfd378688d8e2d","license":"MIT"},
     {"repo":"2noScript/unofficial-api","branch":"main","sha":"5cd80092133a6ecd9efd8860e179cbe9f75cc156","license":"UNVERIFIED"},
     {"repo":"cliat/meta-ai","branch":"main","sha":"991dbd93fb250e6e7271cb596d991ed8118ec9ce","license":"UNVERIFIED"},

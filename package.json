@@ -1,10 +1,12 @@
 {
   "name": "meta-ai-local-bridge",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "packageManager": "pnpm@10",
   "scripts": {
+    "build:meta": "node scripts/build-meta.mjs",
     "build:meta-extension": "node scripts/build-meta-extension.mjs",
+    "build:meta-server": "node scripts/build-meta-server.mjs",
     "check:secrets": "node scripts/check-secrets.mjs",
     "test:meta-overlay": "node scripts/test-meta-overlay.mjs"
   },
