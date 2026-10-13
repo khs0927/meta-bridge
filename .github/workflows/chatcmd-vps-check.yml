@@ -16,6 +16,7 @@ jobs:
         run: |
           bash -n infra/chatcmd-vps/install-debian12.sh
           bash -n infra/chatcmd-vps/healthcheck.sh
+          bash -n infra/chatcmd-vps/install-cloudflared-service.sh
       - name: Nginx syntax
         run: |
           sudo apt-get update -qq
@@ -28,12 +29,18 @@ jobs:
           from pathlib import Path
           p = Path('infra/chatcmd-vps/nginx-chatcmd.conf').read_text()
           s = Path('infra/chatcmd-vps/install-debian12.sh').read_text()
+          tunnel = Path('infra/chatcmd-vps/install-cloudflared-service.sh').read_text()
           assert 'listen 127.0.0.1:8081;' in p
           assert 'access_log off;' in p
           assert 'location / { return 404; }' in p
           assert '-localhost -rfbport 5901' in s
           assert '127.0.0.1:6080 127.0.0.1:5901' in s
           assert 'CHATCMD_BIND=127.0.0.1' in s
+          assert '--token-file /etc/chatcmd/tunnel-token' in tunnel
+          assert 'chmod 0600' in tunnel
+          assert 'PrivateTmp=true' in tunnel
+          assert '--token ' not in tunnel
+          assert 'command -v cloudflared' in tunnel
           assert 'e604ac8cb53322082887f97efdcdd647193de768' in s
           print('All static security assertions passed')
           PY
