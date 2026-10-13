@@ -18,6 +18,7 @@ jobs:
           bash -n infra/chatcmd-vps/healthcheck.sh
           bash -n infra/chatcmd-vps/install-cloudflared-service.sh
           bash -n infra/chatcmd-vps/vps-preflight.sh
+          bash -n infra/chatcmd-vps/oci-cloud-shell-discover.sh
       - name: Nginx syntax
         run: |
           sudo apt-get update -qq
