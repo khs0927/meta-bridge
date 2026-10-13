@@ -1,0 +1,39 @@
+name: ChatCMD VPS deployment config checks
+on:
+  pull_request:
+    paths:
+      - 'infra/chatcmd-vps/**'
+      - '.github/workflows/chatcmd-vps-check.yml'
+  workflow_dispatch:
+jobs:
+  lint-and-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bash syntax
+        run: |
+          bash -n infra/chatcmd-vps/install-debian12.sh
+          bash -n infra/chatcmd-vps/healthcheck.sh
+      - name: Nginx syntax
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq nginx
+          sudo cp infra/chatcmd-vps/nginx-chatcmd.conf /etc/nginx/conf.d/chatcmd-mcp.conf
+          sudo nginx -t
+      - name: Security invariants
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('infra/chatcmd-vps/nginx-chatcmd.conf').read_text()
+          s = Path('infra/chatcmd-vps/install-debian12.sh').read_text()
+          assert 'listen 127.0.0.1:8081;' in p
+          assert 'access_log off;' in p
+          assert 'location / { return 404; }' in p
+          assert '-localhost -rfbport 5901' in s
+          assert '127.0.0.1:6080 127.0.0.1:5901' in s
+          assert 'CHATCMD_BIND=127.0.0.1' in s
+          assert 'e604ac8cb53322082887f97efdcdd647193de768' in s
+          print('All static security assertions passed')
+          PY
