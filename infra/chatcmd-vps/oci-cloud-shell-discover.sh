@@ -4,7 +4,7 @@ set -euo pipefail
 umask 077
 command -v oci >/dev/null || { echo "Use Oracle Cloud Shell (OCI CLI unavailable)"; exit 2; }
 command -v jq >/dev/null || { echo "jq unavailable"; exit 2; }
-tenancy="$OCI_TENANCY_OCID"
+tenancy="${OCI_TENANCY_OCID:-}"
 if [ -z "$tenancy" ] && [ -r "$HOME/.oci/config" ]; then
   tenancy="$(awk -F= '/^[[:space:]]*tenancy[[:space:]]*=/{gsub(/[[:space:]]/,"",$2);print $2;exit}' "$HOME/.oci/config")"
 fi
