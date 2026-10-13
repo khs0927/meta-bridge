@@ -53,3 +53,26 @@ Upstream instructions: https://github.com/int04/ChatCmd/blob/main/docs/PLUGIN_SE
 - GitHub static CI and Gitleaks are necessary but NOT proof of a VPS install, a logged-in browser, or an accessible MCP server.
 - Official `ChatCmd` pinned source was checked: `Cargo.toml` uses Rust 1.85 / `chat-cmd-client` and the extension manifest includes chatgpt.com plus loopback origins.
 
+
+## Oracle Cloud account recovered — one-time mobile authorization path (2026-10-14)
+
+The owner's Gmail contains Oracle account-provisioning messages dated 2026-08-09 for Cloud Account `khs0927`. This verifies a cloud tenancy exists; it does **not** prove a running compute instance, known IP, SSH private key or authorization for arbitrary host commands.
+
+Use the [OCI Console](https://cloud.oracle.com/) signed in as the existing user. On an iPhone, open Cloud Shell (web terminal), then from a private Cloud Shell terminal run:
+
+```sh
+git clone https://github.com/khs0927/meta-bridge.git
+cd meta-bridge
+git fetch origin feat/chatcmd-mobile-vps-20261013
+git checkout feat/chatcmd-mobile-vps-20261013
+bash -n infra/chatcmd-vps/oci-cloud-shell-discover.sh
+bash infra/chatcmd-vps/oci-cloud-shell-discover.sh
+```
+
+The probe **only lists existing instances** across subscribed regions and accessible compartments. OCI CLI already uses the authorized Console Cloud Shell identity; no new API key, GitHub secret or server is required. If tenancy cannot be read from the Cloud Shell OCI CLI config, set `OCI_TENANCY_OCID` privately using the value under Console > Tenancy details (not a password).
+
+**Important**: OCI Cloud Shell is a temporary Oracle-managed shell, not the actual Compute VM. After identifying the VM, use its actual SSH connection (verified host key and user) or OCI Console > Compute > Instance > Console connection. Oracle states that serial console access is primarily for troubleshooting; normal installation should use SSH. Do not deploy ChatCMD into the Cloud Shell itself.
+
+After verified VM access, run `bash infra/chatcmd-vps/vps-preflight.sh` on the VM, then review Debian 12 compatibility, existing services and storage before any installation. Run `install-debian12.sh` **only on an approved dedicated Debian 12 VM**, never on the production n8n host or an unknown shared instance. No existing instance must be destroyed, resized, rebooted or billed without separately verifying ownership and intended impact.
+
+Reference: [Oracle Cloud Shell](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm), [Oracle instance console connection](https://docs.oracle.com/iaas/Content/Compute/References/serialconsole.htm).
